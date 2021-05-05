@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlbionKillboard;
+using System;
 
 public class Template
 {
@@ -6,7 +7,7 @@ public class Template
     public int EventId { get; set; }
     public int TotalVictimKillFame { get; set; }
     public DateTime TimeStamp { get; set; }
-    public string Killer { get; set; }
-    public string Victim { get; set; }
+    public Player Killer { get; set; }
+    public Player Victim { get; set; }
     public int groupMemberCount { get; set; }
 }

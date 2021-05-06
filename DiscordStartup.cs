@@ -53,16 +53,17 @@ namespace AlbionKillboard
             }
         }
 
-        public void Message(List<Template> templates)
+        public void Message(Template template)
         {
             //System.Console.WriteLine(_client.Status.ToString());
-            foreach (Template template in templates)
-            {
-                string message = "EventId: " + template.EventId + " Killer: " + template.Killer + " Victim: " + template.Victim + " Time: " + template.TimeStamp;
+            //foreach (Template template in templates)
+            //{
+                //string message = "EventId: " + template.EventId + " Killer: " + template.Killer + " Victim: " + template.Victim + " Time: " + template.TimeStamp;
                 ulong id = 521066763589386240;
                 var chnl = _client.GetChannel(id) as IMessageChannel;
-                chnl.SendMessageAsync(message);
-            }
+                chnl.SendFileAsync(@"C:\Users\Dreyark\Desktop\path_to_your_file.png");
+                //chnl.SendMessageAsync(message);
+            //}
         }
 
         private Task Log(LogMessage msg)

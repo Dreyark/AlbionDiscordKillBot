@@ -74,7 +74,13 @@ namespace AlbionKillboard
 
                 //    }
                 //tempList = (List<Template>)tempList.OrderByDescending(s => s.TimeStamp);
-                discordStartup.Message(tempList);
+                foreach(Template t in tempList)
+                {
+                    KillboardImage killboardImage = new KillboardImage();
+                    killboardImage.makeImage(t);
+                    discordStartup.Message(t);
+                }
+                //discordStartup.Message(tempList);
                 //}
                 if(eventList.Count >= 300)
                 {

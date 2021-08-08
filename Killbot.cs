@@ -74,15 +74,20 @@ namespace AlbionKillboard
 
                 //    }
                 //tempList = (List<Template>)tempList.OrderByDescending(s => s.TimeStamp);
-                foreach(Template t in tempList)
+                foreach (Template t in tempList)
                 {
                     KillboardImage killboardImage = new KillboardImage();
-                    killboardImage.makeImage(t);
-                    discordStartup.Message(t);
+                    killboardImage.EquipmentImage(t);
+                    discordStartup.SendKillboard(t);
+                    if (t.Victim.Inventory.Count(s => s != null) != 0)
+                    {
+                        killboardImage.InventoryImage(t);
+                        discordStartup.SendInventory(t);
+                    }
                 }
                 //discordStartup.Message(tempList);
                 //}
-                if(eventList.Count >= 300)
+                if (eventList.Count >= 300)
                 {
                     eventList.RemoveRange(0, 200);
                 }

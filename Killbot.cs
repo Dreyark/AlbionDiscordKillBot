@@ -10,88 +10,44 @@ namespace AlbionKillboard
     class Killbot
     {
         List<int> eventList = new List<int>();
-        public void bot(DiscordStartup discordStartup)
+        private List<Template> tempList = new List<Template>();
+        public void Bot(DiscordStartup discordStartup)
         {
             Parser parse = new Parser();
+
             bool x = true;
-            //parse.LoadJsonGuildMembers(APIKeys.AlbionGuildToken, memberList);
-            //foreach (Member member in memberList)
-            //{
-            //    //member.Kills = new List<int>();
-            //    //member.Deaths = new List<int>();
-            //    //member.Kills.AddRange(parse.LoadJsonKillboard(member.Id, "kills"));
-            //    //member.Deaths.AddRange(parse.LoadJsonKillboard(member.Id, "deaths"));
-            //}
             while (x)
             {
-                List<Template> tempList = parse.LoadJsonEvents(eventList);
-                //List<Template> templates = new List<Template>();
-                //foreach (Member member in memberList)
-                //{
-                //    List<string> published = new List<string>();
-                //    List<int> newKills = new List<int>();
-                //    List<int> newDeaths = new List<int>();
-                //    List<int> killDiff = new List<int>();
-                //    List<int> deathsDiff = new List<int>();
-                //    newKills = parse.LoadJsonKillboard(member.Id, "kills");
-                //    newDeaths = parse.LoadJsonKillboard(member.Id, "deaths");
-                //    if (newKills.Count == member.Kills.Count)
-                //    {
-                //        killDiff.AddRange(newKills.Except(member.Kills));
-                //        member.Kills.Clear();
-                //        member.Kills.AddRange(newKills);
-                //    }
-                //    if (newDeaths.Count == member.Deaths.Count)
-                //    {
-                //        deathsDiff.AddRange(newDeaths.Except(member.Deaths));
-                //        member.Deaths.Clear();
-                //        member.Deaths.AddRange(newDeaths);
-                //    }
-                //    foreach (int eventId in killDiff)
-                //    {
-                //        Template template = parse.LoadJsonEvent(eventId);
-                //        System.Console.WriteLine("EventId: " + template.EventId);
-                //        System.Console.WriteLine("Killer: " + template.Killer);
-                //        System.Console.WriteLine("Victim: " + template.Victim);
-                //        System.Console.WriteLine("Date: " + template.TimeStamp);
-                //        if (template.EventId != 0)
-                //        {
-                //            templates.Add(template);
-                //        }
+                tempList.AddRange(parse.LoadJsonEvents(eventList));
+                if (eventList.Count >= 600)
+                {
+                    eventList.RemoveRange(0, 400);
+                }
+                System.Threading.Thread.Sleep(2000);
+            }
+        }
 
-                //    }
-                //    foreach (int eventId in deathsDiff)
-                //    {
-                //        Template template = parse.LoadJsonEvent(eventId);
-                //        System.Console.WriteLine("EventId: " + template.EventId);
-                //        System.Console.WriteLine("Killer: " + template.Killer);
-                //        System.Console.WriteLine("Victim: " + template.Victim);
-                //        System.Console.WriteLine("Date: " + template.TimeStamp);
-                //        if (template.EventId != 0)
-                //        {
-                //            templates.Add(template);
-                //        }
-
-                //    }
-                //tempList = (List<Template>)tempList.OrderByDescending(s => s.TimeStamp);
-                foreach (Template t in tempList)
+        public void SendImage(DiscordStartup discordStartup)
+        {
+            bool x = true;
+            while (x)
+            {
+                foreach (Template t in tempList.ToArray())
                 {
                     KillboardImage killboardImage = new KillboardImage();
-                    killboardImage.EquipmentImage(t);
-                    discordStartup.SendKillboard(t);
-                    if (t.Victim.Inventory.Count(s => s != null) != 0)
+
+                    if (killboardImage.EquipmentImage(t))
+                        discordStartup.SendKillboard(t);
+
+                    if (t.Victim.Inventory != null && t.Victim.Inventory.Any(s => s != null))
                     {
-                        killboardImage.InventoryImage(t);
-                        discordStartup.SendInventory(t);
+                        if (killboardImage.InventoryImage(t))
+                            discordStartup.SendInventory(t);
                     }
+
+                    System.Threading.Thread.Sleep(3000);
+                    tempList.Remove(t);
                 }
-                //discordStartup.Message(tempList);
-                //}
-                if (eventList.Count >= 300)
-                {
-                    eventList.RemoveRange(0, 200);
-                }
-                System.Threading.Thread.Sleep(3000);
             }
         }
     }

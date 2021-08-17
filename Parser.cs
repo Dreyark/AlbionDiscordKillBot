@@ -91,26 +91,21 @@ namespace AlbionKillboard
             {
                 using (var webClient = new WebClient())
                 {
-                    var json = webClient.DownloadString("https://gameinfo.albiononline.com/api/gameinfo/events/");
+                    var json = webClient.DownloadString("https://gameinfo.albiononline.com/api/gameinfo/events?limit=51&offset=0");
                     JArray jsonArray = JArray.Parse(json);
                     foreach (JObject x in jsonArray)
                     {
-                        //if (x["Killer"]["GuildId"].ToObject<string>() == APIKeys.AlbionGuildToken ||
-                        //    x["Victim"]["GuildId"].ToObject<string>() == APIKeys.AlbionGuildToken)
-                        //{
                         if (!eventList.Contains(x["EventId"].ToObject<int>()))
                         {
                             Template temp = new Template();
                             temp = x.ToObject<Template>();
-                            //temp.Killer = x["Killer"].ToObject<Player>();
-                            //temp.Victim= x["Victim"].ToObject<Player>();
-                            //temp.EventId = x["EventId"].ToObject<int>();
-                            //temp.groupMemberCount = x["groupMemberCount"].ToObject<int>();
-                            //temp.TimeStamp = x["TimeStamp"].ToObject<DateTime>();
-                            tempList.Add(temp);
-                            eventList.Add(temp.EventId);
+                            if (temp.Killer.GuildId == APIKeys.AlbionGuildToken || temp.Victim.GuildId ==
+                                APIKeys.AlbionGuildToken)
+                            {
+                                tempList.Add(temp);
+                                eventList.Add(temp.EventId);
+                            }
                         }
-                        //}
                     }
                 }
             }

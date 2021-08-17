@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
@@ -16,7 +17,7 @@ namespace AlbionKillboard
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
-
+        static readonly string StartupPath = Environment.CurrentDirectory;
         public async Task MainAsync()
         {
             _client = new DiscordSocketClient();
@@ -24,14 +25,13 @@ namespace AlbionKillboard
             _services = new ServiceCollection().AddSingleton(_client).AddSingleton(_commands).BuildServiceProvider();
 
             _client.Log += Log;
-
             await RegisterCommandsAsync();
             //_client.GetGuild(455129120486195230);
             await _client.LoginAsync(TokenType.Bot, APIKeys.DiscordToken);
             await _client.StartAsync();
             await Task.Delay(-1);
         }
-
+        
         public async Task RegisterCommandsAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
@@ -61,7 +61,7 @@ namespace AlbionKillboard
             //string message = "EventId: " + template.EventId + " Killer: " + template.Killer + " Victim: " + template.Victim + " Time: " + template.TimeStamp;
             ulong id = 521066763589386240;
             var chnl = _client.GetChannel(id) as IMessageChannel;
-            chnl.SendFileAsync(@"C:\Users\Dreyark\Desktop\path_to_your_file.png");
+            chnl.SendFileAsync(StartupPath+ @"\Resources\path_to_your_file.png");
             //chnl.SendMessageAsync(message);
             //}
         }
@@ -69,9 +69,8 @@ namespace AlbionKillboard
         {
             ulong id = 521066763589386240;
             var chnl = _client.GetChannel(id) as IMessageChannel;
-            chnl.SendFileAsync(@"C:\Users\Dreyark\Desktop\inventory.png");
+            chnl.SendFileAsync(StartupPath+ @"\Resources\inventory.png");
         }
-
         private Task Log(LogMessage msg)
         {
             Console.WriteLine(msg.ToString());

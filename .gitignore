@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /APIKeysLocal.cs
+/.idea/.idea.AlbionKillboard/.idea/.gitignore
+/.idea/.idea.AlbionKillboard/.idea/.name
+/.idea/.idea.AlbionKillboard/.idea/indexLayout.xml
+/.idea/.idea.AlbionKillboard/.idea/vcs.xml

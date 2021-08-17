@@ -10,6 +10,7 @@ namespace AlbionKillboard
         public string Id { get; set; }
         public string Name { get; set; }
         public string GuildName { get; set; }
+        public string GuildId { get; set; }
         public Equipment Equipment { get; set; }
         public Item[] Inventory { get; set; }
     }

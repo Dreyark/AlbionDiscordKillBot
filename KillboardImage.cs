@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -14,31 +15,44 @@ namespace AlbionKillboard
         string srcitemImg = "https://render.albiononline.com/v1/item/";
         string itemCount = "?count=";
         string itemQuality = "&quality=";
+        static string startupPath = Environment.CurrentDirectory;
+        Bitmap equipmentTemplate = new Bitmap(startupPath+ @"\Resources\EquipmentTemplate.png");
+        Bitmap inventoryTemplate = new Bitmap(startupPath+@"\Resources\InventoryTemplate.png");
 
-        Bitmap equipmentTemplate = new Bitmap(@"C:\Users\Dreyark\Desktop\EquipmentTemplate.png");
-        Bitmap inventoryTemplate = new Bitmap(@"C:\Users\Dreyark\Desktop\InventoryTemplate.png");
-
-        public Graphics DownloadImage(Item item, Bitmap bitmap, int x, int y, int sizeX, int sizeY, int countX, int countY)
+        public void DownloadImage(Item item, Bitmap bitmap, int x, int y, int sizeX, int sizeY, int countX, int countY)
         {
             Graphics itemImage = Graphics.FromImage(bitmap);
             if (item != null)
             {
-                WebClient webClient = new WebClient();
-                Bitmap singleItem = new Bitmap(Image.FromStream(new MemoryStream(webClient.DownloadData(srcitemImg + item.Type + itemCount + item.Count + itemQuality + item.Quality))), sizeX, sizeY);
+                // WebClient webClient = new WebClient();
+                // Bitmap singleItem = new Bitmap(Image.FromStream(new MemoryStream(webClient.DownloadData(srcitemImg + item.Type + itemCount + item.Count + itemQuality + item.Quality))), sizeX, sizeY);
+                // itemImage.DrawImage(singleItem, new Point(x, y));
+                Bitmap singleItem;
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadFileCompleted += DownloadCompleted;
+                    singleItem = new Bitmap(Image.FromStream(new MemoryStream(webClient.DownloadData(srcitemImg + item.Type + itemCount + item.Count + itemQuality + item.Quality))), sizeX, sizeY);
+                }
                 itemImage.DrawImage(singleItem, new Point(x, y));
+                
                 System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 12, FontStyle.Bold);
                 System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.LightGray);
                 System.Drawing.StringFormat drawFormat = new System.Drawing.StringFormat();
                 itemImage.DrawString(item.Count.ToString(), drawFont, drawBrush, x + countX, y + countY, drawFormat);
             }
-            return itemImage;
+            // return itemImage;
         }
 
-        public void EquipmentImage(Template temp)
+        private static void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            Console.WriteLine("Success");
+        }
+
+        public bool EquipmentImage(Template temp)
         {
             Graphics stringImage = Graphics.FromImage(equipmentTemplate);
-            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 12, FontStyle.Bold);
-            System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Brown);
+            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 17);
+            System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
             System.Drawing.StringFormat drawFormat = new System.Drawing.StringFormat();
             drawFormat.Alignment = StringAlignment.Center;
             stringImage.DrawString(temp.Killer.Name, drawFont, drawBrush, 150, 5, drawFormat);
@@ -70,29 +84,38 @@ namespace AlbionKillboard
             DownloadImage(temp.Victim.Equipment.Potion, equipmentTemplate, 520, 205, 122, 122, 62, 61);
             DownloadImage(temp.Victim.Equipment.Mount, equipmentTemplate, 430, 275, 122, 122, 62, 61);
             //return nowa;
-            equipmentTemplate.Save(@"C:\Users\Dreyark\Desktop\path_to_your_file.png", ImageFormat.Png);
+            equipmentTemplate.Save(startupPath+ @"\Resources\path_to_your_file.png", ImageFormat.Png);
+            return true;
         }
-        public void InventoryImage(Template temp)
+        public bool InventoryImage(Template temp)
         {
             int items = temp.Victim.Inventory.Count(s => s != null);
             double x = Math.Ceiling(Convert.ToDouble(items) / 8);
-            int height = Convert.ToInt32(x) * 115;
-            Bitmap inventoryImg = new Bitmap(1100, height);
+            int height = Convert.ToInt32(x) * 130;
+            Bitmap inventoryImg = new Bitmap(1060, height);
             Graphics inventoryImage = Graphics.FromImage(inventoryImg);
             for (int i = 0; i < x; i++)
-                inventoryImage.DrawImage(inventoryTemplate, new Point(0, Convert.ToInt32(i * 100)));
+                inventoryImage.DrawImage(inventoryTemplate, new Point(0, Convert.ToInt32(i * 130)));
             int cells = 0;
-            for (int i = 0; i <= items; i++)
+            // double rows = Math.Floor(Convert.ToDouble((items / 8)));
+            int row = 0;
+            foreach (Item item in temp.Victim.Inventory)
             {
-                double row = Math.Floor(Convert.ToDouble((i / 8)));
-                if (cells > 7)
+                if (item != null)
                 {
-                    cells = 0;
+                    if (cells > 7)
+                    {
+                        row++;
+                        cells = 0;
+                    }
+
+                    DownloadImage(item, inventoryImg, cells * 130 + 10, Convert.ToInt32(row) * 130, 140, 140, 98, 95);
+                    cells++;
                 }
-                DownloadImage(temp.Victim.Inventory[i], inventoryImg, cells * 130 + 20, Convert.ToInt32(row) * 110, 125 , 125, 84, 85);
-                cells++;
             }
-            inventoryImg.Save(@"C:\Users\Dreyark\Desktop\inventory.png", ImageFormat.Png);
+
+            inventoryImg.Save(startupPath+ @"\Resources\inventory.png", ImageFormat.Png);
+            return true;
         }
     }
 }

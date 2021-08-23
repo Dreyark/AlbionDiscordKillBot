@@ -1,0 +1,32 @@
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-focal AS base
+RUN apt-get update && apt-get install -y libgdiplus
+
+WORKDIR /app
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-focal AS build
+
+
+RUN apt-get update && apt-get install -y apt-utils
+RUN apt-get install -y libfontconfig1
+RUN apt-get install -y libgdiplus
+RUN apt-get install -y libc6-dev 
+RUN ln -s /usr/lib/libgdiplus.so/usr/lib/gdiplus.dll
+
+# copy csproj and restore as distinct layers
+WORKDIR /src
+COPY AlbionKillboard.csproj AlbionKillboard/
+RUN dotnet restore "AlbionKillboard/AlbionKillboard.csproj"
+COPY . .
+
+
+WORKDIR /src/
+RUN dotnet build "AlbionKillboard.csproj" -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish "AlbionKillboard.csproj" -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+COPY EquipmentTemplate.png .
+COPY InventoryTemplate.png .
+ENTRYPOINT ["dotnet", "AlbionKillboard.dll"]

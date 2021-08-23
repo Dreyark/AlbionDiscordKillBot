@@ -1,8 +1,4 @@
-﻿using AlbionKillboard.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 
 namespace AlbionKillboard
 {
@@ -17,7 +13,6 @@ namespace AlbionKillboard
             Thread sendBotTH;
             discordTH = new Thread(discordStartup.MainAsync().GetAwaiter().GetResult);
             discordTH.Start();
-            // killbotTH = new Thread(() => killbot.Bot(discordStartup));
             killBotTH = new Thread(()=> killbot.Bot((discordStartup)));
             sendBotTH = new Thread(() => killbot.SendImage(discordStartup));
             killBotTH.Start();

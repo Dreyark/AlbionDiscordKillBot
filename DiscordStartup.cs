@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -55,21 +51,15 @@ namespace AlbionKillboard
 
         public void SendKillboard(Template template)
         {
-            //System.Console.WriteLine(_client.Status.ToString());
-            //foreach (Template template in templates)
-            //{
-            //string message = "EventId: " + template.EventId + " Killer: " + template.Killer + " Victim: " + template.Victim + " Time: " + template.TimeStamp;
-            ulong id = 521066763589386240;
+            ulong id = 824551134849007666;
             var chnl = _client.GetChannel(id) as IMessageChannel;
-            chnl.SendFileAsync(StartupPath+ @"\Resources\path_to_your_file.png");
-            //chnl.SendMessageAsync(message);
-            //}
+            chnl.SendFileAsync(StartupPath+ @"Kill.png");
         }
         public void SendInventory(Template template)
         {
-            ulong id = 521066763589386240;
+            ulong id = 824551134849007666;
             var chnl = _client.GetChannel(id) as IMessageChannel;
-            chnl.SendFileAsync(StartupPath+ @"\Resources\inventory.png");
+            chnl.SendFileAsync(StartupPath+ @"inventory.png");
         }
         private Task Log(LogMessage msg)
         {

@@ -45,7 +45,7 @@ namespace AlbionKillboard
                             discordStartup.SendInventory(t);
                     }
 
-                    System.Threading.Thread.Sleep(3000);
+                    System.Threading.Thread.Sleep(5000);
                     tempList.Remove(t);
                 }
             }

@@ -16,17 +16,14 @@ namespace AlbionKillboard
         string itemCount = "?count=";
         string itemQuality = "&quality=";
         static string startupPath = Environment.CurrentDirectory;
-        Bitmap equipmentTemplate = new Bitmap(startupPath+ @"\Resources\EquipmentTemplate.png");
-        Bitmap inventoryTemplate = new Bitmap(startupPath+@"\Resources\InventoryTemplate.png");
+        Bitmap equipmentTemplate = new Bitmap("EquipmentTemplate.png");
+        Bitmap inventoryTemplate = new Bitmap("InventoryTemplate.png");
 
         public void DownloadImage(Item item, Bitmap bitmap, int x, int y, int sizeX, int sizeY, int countX, int countY)
         {
             Graphics itemImage = Graphics.FromImage(bitmap);
             if (item != null)
             {
-                // WebClient webClient = new WebClient();
-                // Bitmap singleItem = new Bitmap(Image.FromStream(new MemoryStream(webClient.DownloadData(srcitemImg + item.Type + itemCount + item.Count + itemQuality + item.Quality))), sizeX, sizeY);
-                // itemImage.DrawImage(singleItem, new Point(x, y));
                 Bitmap singleItem;
                 using (WebClient webClient = new WebClient())
                 {
@@ -35,7 +32,7 @@ namespace AlbionKillboard
                 }
                 itemImage.DrawImage(singleItem, new Point(x, y));
                 
-                System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 12, FontStyle.Bold);
+                System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
                 System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.LightGray);
                 System.Drawing.StringFormat drawFormat = new System.Drawing.StringFormat();
                 itemImage.DrawString(item.Count.ToString(), drawFont, drawBrush, x + countX, y + countY, drawFormat);
@@ -51,7 +48,7 @@ namespace AlbionKillboard
         public bool EquipmentImage(Template temp)
         {
             Graphics stringImage = Graphics.FromImage(equipmentTemplate);
-            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 17);
+            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 13);
             System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
             System.Drawing.StringFormat drawFormat = new System.Drawing.StringFormat();
             drawFormat.Alignment = StringAlignment.Center;
@@ -62,29 +59,29 @@ namespace AlbionKillboard
             stringImage.DrawString(temp.Victim.GuildName, drawFont, drawBrush, 475, 20, drawFormat);
             stringImage.DrawString("IP: " + temp.Victim.AverageItemPower.ToString(), drawFont, drawBrush, 550, 300, drawFormat);
 
-            DownloadImage(temp.Killer.Equipment.Bag, equipmentTemplate, 15, 45, 122,122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.Head, equipmentTemplate, 105, 35, 122, 122,62,61);
-            DownloadImage(temp.Killer.Equipment.Cape, equipmentTemplate, 195, 45, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.MainHand, equipmentTemplate, 15, 125, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.Armor, equipmentTemplate, 105, 115, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.OffHand, equipmentTemplate, 195, 125, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.Food, equipmentTemplate, 15, 205, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.Shoes, equipmentTemplate, 105, 195, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.Potion, equipmentTemplate, 195, 205, 122, 122, 62, 61);
-            DownloadImage(temp.Killer.Equipment.Mount, equipmentTemplate, 105, 275, 122, 122, 62, 61);
+            DownloadImage(temp.Killer.Equipment.Bag, equipmentTemplate, 15, 45, 90,90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.Head, equipmentTemplate, 105, 35, 90, 90,60,57);
+            DownloadImage(temp.Killer.Equipment.Cape, equipmentTemplate, 195, 45, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.MainHand, equipmentTemplate, 15, 125, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.Armor, equipmentTemplate, 105, 115, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.OffHand, equipmentTemplate, 195, 125, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.Food, equipmentTemplate, 15, 205, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.Shoes, equipmentTemplate, 105, 195, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.Potion, equipmentTemplate, 195, 205, 90, 90, 60, 57);
+            DownloadImage(temp.Killer.Equipment.Mount, equipmentTemplate, 105, 275, 90, 90, 60, 57);
 
-            DownloadImage(temp.Victim.Equipment.Bag, equipmentTemplate, 340, 45, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Head, equipmentTemplate, 430, 35, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Cape, equipmentTemplate, 520, 45, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.MainHand, equipmentTemplate, 340, 125, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Armor, equipmentTemplate, 430, 115, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.OffHand, equipmentTemplate, 520, 125, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Food, equipmentTemplate, 340, 205, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Shoes, equipmentTemplate, 430, 195, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Potion, equipmentTemplate, 520, 205, 122, 122, 62, 61);
-            DownloadImage(temp.Victim.Equipment.Mount, equipmentTemplate, 430, 275, 122, 122, 62, 61);
+            DownloadImage(temp.Victim.Equipment.Bag, equipmentTemplate, 340, 45, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Head, equipmentTemplate, 430, 35, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Cape, equipmentTemplate, 520, 45, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.MainHand, equipmentTemplate, 340, 125, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Armor, equipmentTemplate, 430, 115, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.OffHand, equipmentTemplate, 520, 125, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Food, equipmentTemplate, 340, 205, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Shoes, equipmentTemplate, 430, 195, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Potion, equipmentTemplate, 520, 205, 90, 90, 60, 57);
+            DownloadImage(temp.Victim.Equipment.Mount, equipmentTemplate, 430, 275, 90, 90, 60, 57);
             //return nowa;
-            equipmentTemplate.Save(startupPath+ @"\Resources\path_to_your_file.png", ImageFormat.Png);
+            equipmentTemplate.Save("Kill.png", ImageFormat.Png);
             return true;
         }
         public bool InventoryImage(Template temp)
@@ -95,7 +92,7 @@ namespace AlbionKillboard
             Bitmap inventoryImg = new Bitmap(1060, height);
             Graphics inventoryImage = Graphics.FromImage(inventoryImg);
             for (int i = 0; i < x; i++)
-                inventoryImage.DrawImage(inventoryTemplate, new Point(0, Convert.ToInt32(i * 130)));
+                inventoryImage.DrawImage(inventoryTemplate, new Point(0, Convert.ToInt32(i * 100)));
             int cells = 0;
             // double rows = Math.Floor(Convert.ToDouble((items / 8)));
             int row = 0;
@@ -109,12 +106,12 @@ namespace AlbionKillboard
                         cells = 0;
                     }
 
-                    DownloadImage(item, inventoryImg, cells * 130 + 10, Convert.ToInt32(row) * 130, 140, 140, 98, 95);
+                    DownloadImage(item, inventoryImg, cells * 98 + 8, Convert.ToInt32(row) * 100, 104, 104, 70, 68);
                     cells++;
                 }
             }
 
-            inventoryImg.Save(startupPath+ @"\Resources\inventory.png", ImageFormat.Png);
+            inventoryImg.Save("inventory.png", ImageFormat.Png);
             return true;
         }
     }

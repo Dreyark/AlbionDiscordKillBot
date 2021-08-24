@@ -53,13 +53,13 @@ namespace AlbionKillboard
         {
             ulong id = 824551134849007666;
             var chnl = _client.GetChannel(id) as IMessageChannel;
-            chnl.SendFileAsync(StartupPath+ @"Kill.png");
+            chnl.SendFileAsync("Kill.png");
         }
         public void SendInventory(Template template)
         {
             ulong id = 824551134849007666;
             var chnl = _client.GetChannel(id) as IMessageChannel;
-            chnl.SendFileAsync(StartupPath+ @"inventory.png");
+            chnl.SendFileAsync("inventory.png");
         }
         private Task Log(LogMessage msg)
         {
